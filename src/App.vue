@@ -90,7 +90,6 @@ export default {
             this.visibleCards = [ ...this.visibleCards, ...this.deck.draw(newCards) ];
         }
         while (this.availableSets.length == 0 && ! this.deck.empty()) {
-            console.log("No sets available - refilling.");
             this.visibleCards = [ ...this.visibleCards, ...this.deck.draw(3) ];
         }
     },
