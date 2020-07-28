@@ -88,18 +88,34 @@ export default {
 </script>
 
 <style scoped lang="scss">
+    @mixin cardSizes($card-size) {
+        width: $card-size;
+        height: $card-size * 4/3;
+        padding: $card-size / 10;
+
+        .inner-card {
+            padding: 2px + $card-size / 20;
+        }
+
+        svg {
+            width: $card-size * 0.8;
+            height: $card-size * 0.4;
+        }
+
+    }
+
     .card {
-        width: 150px;
-        height: 200px;
-        padding: 5px;
+        @include cardSizes(150px);
 
         &.mini {
-            width: 75px;
-            height: 100px;
+            @include cardSizes(75px);
+        }
 
-            svg {
-                width: 60px;
-                height: 30px;
+        @media only screen and (max-device-width : 767px) {
+            @include cardSizes(70px);
+
+            &.mini {
+                @include cardSizes(40px);
             }
         }
     }
@@ -120,9 +136,11 @@ export default {
         }
     }
 
-    svg {
-        width: 120px;
-        height: 60px;
+    .symbol {
+        padding: 0;
+        display: flex;
+        flex-direction: both;
+        justify-content: space-around;
     }
 
     .col-green {

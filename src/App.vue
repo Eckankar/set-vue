@@ -1,21 +1,14 @@
 <template>
     <div id="app">
-        <transition-group name="visible-cards" mode="out-in" id="card-grid" tag="div">
-            <Card
-                v-for="card in visibleCards" v-bind:key="card.id"
-                v-bind:symbol="card.symbol" v-bind:number="card.number"
-                v-bind:shading="card.shading" v-bind:color="card.color"
-                v-bind:selected="card.selected"
-                @click="toggleSelect(card)"
-            />
-        </transition-group>
         <div id="info-panel">
             <h1>SET</h1>
 
             <h2>Current score: {{ score }}</h2>
             <h2>SETs available: {{ availableSets.length }}</h2>
 
-            <div v-if="sets.length > 0">
+            <button @click="restartGame">Restart</button>
+
+            <div v-if="sets.length > 0" id="found-sets-container-top">
                 <h2>Found sets:</h2>
                 <ul class="found-sets">
                     <li v-for="set in sets" v-bind:key="set[0].id">
@@ -27,9 +20,27 @@
                     </li>
                 </ul>
             </div>
-
-            <button @click="restartGame">Restart</button>
-
+        </div>
+        <transition-group name="visible-cards" mode="out-in" id="card-grid" tag="div">
+            <Card
+                v-for="card in visibleCards" v-bind:key="card.id"
+                v-bind:symbol="card.symbol" v-bind:number="card.number"
+                v-bind:shading="card.shading" v-bind:color="card.color"
+                v-bind:selected="card.selected"
+                @click="toggleSelect(card)"
+            />
+        </transition-group>
+        <div v-if="sets.length > 0" id="found-sets-container-bottom">
+            <h2>Found sets:</h2>
+            <ul class="found-sets">
+                <li v-for="set in sets" v-bind:key="set[0].id">
+                    <Card class="mini"
+                        v-for="card in set" v-bind:key="card.id"
+                        v-bind:symbol="card.symbol" v-bind:number="card.number"
+                        v-bind:shading="card.shading" v-bind:color="card.color"
+                    />
+                </li>
+            </ul>
         </div>
     </div>
 </template>
@@ -90,6 +101,7 @@ export default {
             this.visibleCards = [ ...this.visibleCards, ...this.deck.draw(newCards) ];
         }
         while (this.availableSets.length == 0 && ! this.deck.empty()) {
+            console.log("Refilling");
             this.visibleCards = [ ...this.visibleCards, ...this.deck.draw(3) ];
         }
     },
@@ -125,15 +137,26 @@ export default {
 
 <style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
 
-  display: grid;
-  grid-template-columns: 3fr 1fr;
+    @media only screen and (min-device-width : 768px) {
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+
+        #found-sets-container-bottom {
+            display: none;
+        }
+    }
+
+    @media only screen and (max-device-width : 767px) {
+        #found-sets-container-top {
+            display: none;
+        }
+    }
 }
 
 #card-grid {
@@ -163,11 +186,17 @@ export default {
 }
 
 #info-panel {
-    .found-sets {
-        list-style: none;
+    h1, h2 {
+        margin: 0;
+        margin-bottom: 0.2rem;
     }
 
-    .found-sets > li {
+}
+
+.found-sets {
+    list-style: none;
+
+    & > li {
         display: flex;
         justify-content: center;
     }
