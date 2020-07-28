@@ -14,8 +14,7 @@
                     <li v-for="set in sets" v-bind:key="set[0].id">
                         <Card class="mini"
                             v-for="card in set" v-bind:key="card.id"
-                            v-bind:symbol="card.symbol" v-bind:number="card.number"
-                            v-bind:shading="card.shading" v-bind:color="card.color"
+                            v-bind:card="card"
                         />
                     </li>
                 </ul>
@@ -24,9 +23,7 @@
         <transition-group name="visible-cards" mode="out-in" id="card-grid" tag="div">
             <Card
                 v-for="card in visibleCards" v-bind:key="card.id"
-                v-bind:symbol="card.symbol" v-bind:number="card.number"
-                v-bind:shading="card.shading" v-bind:color="card.color"
-                v-bind:selected="card.selected"
+                v-bind:card="card"
                 @click="toggleSelect(card)"
             />
         </transition-group>
@@ -36,8 +33,7 @@
                 <li v-for="set in sets" v-bind:key="set[0].id">
                     <Card class="mini"
                         v-for="card in set" v-bind:key="card.id"
-                        v-bind:symbol="card.symbol" v-bind:number="card.number"
-                        v-bind:shading="card.shading" v-bind:color="card.color"
+                        v-bind:card="card"
                     />
                 </li>
             </ul>
@@ -77,7 +73,21 @@ export default {
   },
   methods: {
     checkForSet () {
-        if (! this.verifySet(this.selectedCards)) return;
+        if (this.selectedCards.length != 3) return;
+
+        if (! this.verifySet(this.selectedCards)) {
+            let that = this;
+            for (let card of this.selectedCards) {
+                that.$set(card, 'error', true);
+            }
+            setTimeout( () => {
+                for (let card of that.visibleCards) {
+                    that.$set(card, 'error', false);
+                    card.selected = false;
+                }
+            }, 500 );
+            return;
+        }
 
         this.registerSet(this.selectedCards);
         this.refillCards();

@@ -1,8 +1,9 @@
 <template>
-    <div class="card" v-bind:class="{ selected: selected }" @click="$emit('click')">
+    <div class="card" v-bind:class="{ selected: card.selected, error: card.error }"
+        @click="$emit('click')">
         <div class="inner-card">
-            <div class="symbol"
-                v-for="sym in parseInt(number)" :key="sym">
+            <div class="card.symbol"
+                v-for="sym in parseInt(card.number)" :key="sym">
                 <svg preserveAspectRatio="none"
                 viewBox="0 0 10 10">
 
@@ -19,7 +20,7 @@
                     <g v-bind:fill="shadePattern" v-bind:stroke="drawColor">
 
                         <!-- Diamond -->
-                        <path v-if="symbol === 'diamond'" d="
+                        <path v-if="card.symbol === 'diamond'" d="
                             M 1 5
                             L 5 9
                             L 9 5
@@ -29,7 +30,7 @@
                         "/>
 
                         <!-- Circle -->
-                        <path v-if="symbol === 'circle'" d="
+                        <path v-if="card.symbol === 'circle'" d="
                         M 2 1 L 8 1
                         C 10 1, 10 9, 8 9
                         M 8 9 L 2 9
@@ -37,7 +38,7 @@
                         "/>
 
                         <!-- Squiggle -->
-                        <path v-if="symbol === 'squiggle'" d="
+                        <path v-if="card.symbol === 'squiggle'" d="
                         M 1 6
                         C 1 4, 1 1, 3 1
                         S 5 4, 7 3
@@ -58,26 +59,24 @@
 export default {
   name: 'Card',
   props: {
-    symbol: String,
-    number: Number,
-    shading: String,
-    color: String,
-    selected: Boolean,
+    card: Object,
   },
   computed: {
     drawColor() {
-      if (this.color === 'green')  return '#00FF00';
-      if (this.color === 'red')    return '#FF0000';
-      if (this.color === 'purple') return '#3714a3';
+      if (this.card.color === 'green')  return '#00FF00';
+      if (this.card.color === 'red')    return '#FF0000';
+      if (this.card.color === 'purple') return '#3714a3';
       return '#FFFFFF';
     },
     symbolClass() {
       return `col-${this.color}`;
     },
     shadePattern() {
-      if (this.shading === 'shaded') return `url(#shaded-${this.drawColor})`;
-      if (this.shading === 'filled') return this.drawColor;
-      if (this.shading === 'empty')  return this.selected ? '#CCC' : '#FFFFFF';
+      if (this.card.shading === 'shaded') return `url(#shaded-${this.drawColor})`;
+      if (this.card.shading === 'filled') return this.drawColor;
+      if (this.card.shading === 'empty')  return this.card.error ? '#C00' :
+                                                 this.card.selected ? '#CCC' :
+                                                                      '#FFFFFF';
       return '';
     },
     shadedPatternName() {
@@ -133,6 +132,11 @@ export default {
 
         .selected & {
             background-color: #CCC;
+        }
+
+        .error & {
+            background-color: #C00;
+            transition: background-color 0.5s ease;
         }
     }
 
