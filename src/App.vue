@@ -143,6 +143,10 @@ export default {
 
     .card {
         transition: background-color 0.2s;
+
+        -webkit-column-break-inside: avoid;
+                  page-break-inside: avoid;
+                       break-inside: avoid;
     }
 
     .visible-cards-enter-active, .visible-cards-leave-active {
