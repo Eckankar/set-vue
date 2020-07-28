@@ -1,16 +1,14 @@
 <template>
     <div id="app">
-        <div id="card-grid">
-            <transition-group name="visible-cards" mode="out-in">
-                <Card
-                    v-for="card in visibleCards" v-bind:key="card.id"
-                    v-bind:symbol="card.symbol" v-bind:number="card.number"
-                    v-bind:shading="card.shading" v-bind:color="card.color"
-                    v-bind:selected="card.selected"
-                    @click="toggleSelect(card)"
-                />
-            </transition-group>
-        </div>
+        <transition-group name="visible-cards" mode="out-in" id="card-grid" tag="div">
+            <Card
+                v-for="card in visibleCards" v-bind:key="card.id"
+                v-bind:symbol="card.symbol" v-bind:number="card.number"
+                v-bind:shading="card.shading" v-bind:color="card.color"
+                v-bind:selected="card.selected"
+                @click="toggleSelect(card)"
+            />
+        </transition-group>
         <div id="info-panel">
             <h1>SET</h1>
 

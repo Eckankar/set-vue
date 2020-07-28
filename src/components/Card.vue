@@ -20,7 +20,7 @@
 
                         <!-- Diamond -->
                         <path v-if="symbol === 'diamond'" d="
-                            M 1 5 
+                            M 1 5
                             L 5 9
                             L 9 5
                             L 5 1
@@ -39,11 +39,11 @@
                         <!-- Squiggle -->
                         <path v-if="symbol === 'squiggle'" d="
                         M 1 6
-                        C 1 4, 1 1, 3 1  
+                        C 1 4, 1 1, 3 1
                         S 5 4, 7 3
                         S 9 0, 9 4
 
-                        C 9 6, 9 9, 7 9  
+                        C 9 6, 9 9, 7 9
                         S 5 6, 3 7
                         S 1 10, 1 6
                         "/>
@@ -89,8 +89,6 @@ export default {
 
 <style scoped lang="scss">
     .card {
-        display: inline-block;
-        border: 1px solid black;
         width: 150px;
         height: 200px;
         padding: 5px;
@@ -104,13 +102,11 @@ export default {
                 height: 30px;
             }
         }
-
-        &.selected {
-            background-color: #CCC;
-        }
     }
 
     .inner-card {
+        display: inline-block;
+        border: 1px solid black;
         margin: 0px;
         width: 100%;
         height: 100%;
@@ -118,6 +114,10 @@ export default {
         display: flex;
         flex-direction: column;
         justify-content: space-around;
+
+        .selected & {
+            background-color: #CCC;
+        }
     }
 
     svg {
