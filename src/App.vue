@@ -13,6 +13,7 @@
             <h1>SET</h1>
 
             <h2>Current score: {{ score }}</h2>
+            <h2>SETs available: {{ availableSets.length }}</h2>
 
             <div v-if="sets.length > 0">
                 <h2>Found sets:</h2>
@@ -36,6 +37,7 @@
 <script>
 import Card from './components/Card.vue';
 import { Deck } from './deck.js';
+import { combinations } from './utils.js';
 import _ from 'lodash';
 
 let deck = new Deck();
@@ -51,34 +53,45 @@ export default {
     };
   },
   computed: {
+    availableSets () {
+        let possibleSets = combinations(this.visibleCards, 3);
+        return _.filter(possibleSets, (s) => this.verifySet(s));
+    },
     selectedCards() {
         return _.filter(this.visibleCards, (c) => c.selected);
     },
     score() {
         return this.sets.length;
-    }
+    },
   },
   methods: {
     checkForSet () {
-        if (this.selectedCards.length != 3) return;
+        if (! this.verifySet(this.selectedCards)) return;
+
+        this.registerSet(this.selectedCards);
+        this.refillCards();
+    },
+    verifySet (cards) {
+        if (cards.length != 3) return;
 
         var complies = true;
         for (let attribute of ['symbol', 'number', 'shading', 'color']) {
-            let values = _.map(this.selectedCards, (c) => c[attribute]);
+            let values = _.map(cards, (c) => c[attribute]);
             let uniqCount = _.uniq(values).length;
 
             complies = complies && (uniqCount == 1 || uniqCount == 3);
         }
 
-        if (complies) {
-            this.registerSet(this.selectedCards);
-            this.refillCards();
-        }
+        return complies;
     },
     refillCards () {
         let newCards = 12 - this.visibleCards.length;
         if (newCards > 0) {
             this.visibleCards = [ ...this.visibleCards, ...this.deck.draw(newCards) ];
+        }
+        while (this.availableSets.length == 0 && ! this.deck.empty()) {
+            console.log("No sets available - refilling.");
+            this.visibleCards = [ ...this.visibleCards, ...this.deck.draw(3) ];
         }
     },
     removeCard (card) {

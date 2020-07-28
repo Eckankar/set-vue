@@ -37,4 +37,8 @@ export class Deck {
         this.cards = this.cards.slice(n);
         return res;
     }
+
+    empty() {
+        return this.cards.length == 0;
+    }
 }
