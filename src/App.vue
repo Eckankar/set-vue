@@ -269,6 +269,7 @@ export default {
 
 .found-sets {
     list-style: none;
+    padding-left: 0;
 
     & > li {
         display: flex;
