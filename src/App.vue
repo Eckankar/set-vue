@@ -3,6 +3,11 @@
         <div id="info-panel">
             <h1>SET</h1>
 
+            <ul id="toplinks">
+                <li><a href="http://magliery.com/Set/SetRules.html">Rules</a></li>
+                <li><a href="https://github.com/Eckankar/set-vue">GitHub</a></li>
+            </ul>
+
             <h2>Current score: {{ score }}</h2>
             <h2>SETs available: {{ availableSets.length }}</h2>
 
@@ -197,7 +202,35 @@ export default {
 #info-panel {
     h1, h2 {
         margin: 0;
-        margin-bottom: 0.2rem;
+        margin-bottom: 0.3rem;
+    }
+
+    #toplinks {
+        margin: .4em 0;
+
+        padding: 0;
+        list-style: none;
+        font-size: smaller;
+
+        & > li {
+            display: inline;
+
+            a {
+                padding: 0px .3rem;
+            }
+
+            // https://blog.sapegin.me/all/accessible-inline-list/
+            & + li::before {
+                content: '';
+                display: inline-block;
+                vertical-align: middle;
+                margin: 0 0.5ch;
+                width: 3px;
+                height: 3px;
+                border-radius: 50%;
+                background-color: currentColor;
+            }
+        }
     }
 
 }
