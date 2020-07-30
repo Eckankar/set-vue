@@ -8,8 +8,16 @@
                 <li><a href="https://github.com/Eckankar/set-vue">GitHub</a></li>
             </ul>
 
-            <h2>Current score: {{ score }}</h2>
-            <h2>SETs available: {{ availableSets.length }}</h2>
+            <div id="stats-block">
+                <div class="stat-box">
+                    <span class="stat-box-title">Score</span>
+                    <span class="stat-box-body">{{ score }}</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-box-title">Available SETs</span>
+                    <span class="stat-box-body">{{ availableSets.length }}</span>
+                </div>
+            </div>
 
             <button @click="restartGame">Restart</button>
 
@@ -231,6 +239,30 @@ export default {
                 background-color: currentColor;
             }
         }
+    }
+
+    #stats-block {
+        margin-top: 1em;
+        margin-bottom: .5em;
+        .stat-box {
+            display: inline-block;
+            border: 2px solid black;
+            padding: .6em;
+            margin: 0 .2em;
+
+            .stat-box-title {
+                font-size: smaller;
+                position: relative;
+                top: -1.7em;
+                background-color: white;
+                padding: .25em;
+            }
+
+            .stat-box-body {
+                font-size: larger;
+            }
+        }
+
     }
 
 }
