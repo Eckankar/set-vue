@@ -7,7 +7,7 @@
                 <svg preserveAspectRatio="none"
                 viewBox="0 0 10 10">
 
-                    <pattern v-bind:id="shadedPatternName" patternUnits="userSpaceOnUse"
+                    <pattern v-bind:id="shadedPatternName(sym)" patternUnits="userSpaceOnUse"
                             width="1" height="1">
                     <path d="M 0.1 0    L 0.1 1
                             M 0.6 0    L 0.6 1
@@ -15,7 +15,7 @@
                         stroke-width="0.1" v-bind:stroke="drawColor"/>
                     </pattern>
 
-                    <g v-bind:fill="shadePattern" v-bind:stroke="drawColor">
+                    <g v-bind:fill="shadePattern(sym)" v-bind:stroke="drawColor">
 
                         <!-- Diamond -->
                         <path v-if="card.symbol === 'diamond'" d="
@@ -59,6 +59,19 @@ export default {
   props: {
     card: Object,
   },
+  methods: {
+    shadePattern(n) {
+      if (this.card.shading === 'shaded') return `url(#${this.shadedPatternName(n)})`;
+      if (this.card.shading === 'filled') return this.drawColor;
+      if (this.card.shading === 'empty')  return this.card.error ? '#C00' :
+                                                 this.card.selected ? '#CCC' :
+                                                                      '#FFFFFF';
+      return '';
+    },
+    shadedPatternName(n) {
+      return ['shaded', this.card.id, n].join("-");
+    },
+  },
   computed: {
     drawColor() {
       if (this.card.color === 'green')  return '#00FF00';
@@ -69,17 +82,6 @@ export default {
     symbolClass() {
       return `col-${this.color}`;
     },
-    shadePattern() {
-      if (this.card.shading === 'shaded') return `url(#shaded-${this.drawColor})`;
-      if (this.card.shading === 'filled') return this.drawColor;
-      if (this.card.shading === 'empty')  return this.card.error ? '#C00' :
-                                                 this.card.selected ? '#CCC' :
-                                                                      '#FFFFFF';
-      return '';
-    },
-    shadedPatternName() {
-      return 'shaded-' + this.drawColor;
-    }
   },
 };
 </script>
