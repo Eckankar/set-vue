@@ -10,9 +10,7 @@
                     <pattern v-bind:id="shadedPatternName" patternUnits="userSpaceOnUse"
                             width="1" height="1">
                     <path d="M 0.1 0    L 0.1 1
-                            M 0.35 0   L 0.35 1
                             M 0.6 0    L 0.6 1
-                            M 0.85 0   L 0.85 1
                         "
                         stroke-width="0.1" v-bind:stroke="drawColor"/>
                     </pattern>
