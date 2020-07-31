@@ -33,13 +33,16 @@
                 </ul>
             </div>
         </div>
-        <transition-group name="visible-cards" mode="out-in" id="card-grid" tag="div">
-            <Card
-                v-for="card in visibleCards" v-bind:key="card.id"
-                v-bind:card="card"
-                @click="toggleSelect(card)"
-            />
-        </transition-group>
+        <div id="game-space">
+            <span v-if="gameOver" id="game-over-label">Game Over</span>
+            <transition-group name="visible-cards" mode="out-in" id="card-grid" tag="div">
+                <Card
+                    v-for="card in visibleCards" v-bind:key="card.id"
+                    v-bind:card="card"
+                    @click="toggleSelect(card)"
+                />
+            </transition-group>
+        </div>
         <div v-if="sets.length > 0" id="found-sets-container-bottom">
             <h2>Found sets:</h2>
             <ul class="found-sets">
@@ -76,6 +79,9 @@ export default {
     availableSets () {
         let possibleSets = combinations(this.visibleCards, 3);
         return _.filter(possibleSets, (s) => this.verifySet(s));
+    },
+    gameOver () {
+        return this.availableSets == 0 && this.deck.empty();
     },
     selectedCards() {
         return _.filter(this.visibleCards, (c) => c.selected);
@@ -181,6 +187,10 @@ export default {
     }
 }
 
+#game-space {
+    position: relative;
+}
+
 #card-grid {
     -webkit-column-count: 4;
        -moz-column-count: 4;
@@ -205,6 +215,21 @@ export default {
     .visible-cards-move {
         transition: transform 0.2s ease;
     }
+
+}
+
+#game-over-label {
+    z-index: 2;
+    font-size: xxx-large;
+    color: red;
+    padding: 2rem;
+    background-color: white;
+    border: 2px dashed black;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 #info-panel {
