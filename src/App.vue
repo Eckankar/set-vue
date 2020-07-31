@@ -81,7 +81,7 @@ export default {
         return _.filter(possibleSets, (s) => this.verifySet(s));
     },
     gameOver () {
-        return this.availableSets == 0 && this.deck.empty();
+        return this.availableSets.length == 0 && this.deck.empty();
     },
     selectedCards() {
         return _.filter(this.visibleCards, (c) => c.selected);
