@@ -60,17 +60,17 @@ import { Deck } from './deck.js';
 import { combinations } from './utils.js';
 import _ from 'lodash';
 
-let deck = new Deck();
-let visibleCards = deck.draw(12);
-
 export default {
   name: 'SET',
   data: function () {
     return {
-        deck: deck,
-        visibleCards: visibleCards,
+        deck: new Deck(),
+        visibleCards: [],
         sets: [],
     };
+  },
+  created () {
+    this.refillCards();
   },
   computed: {
     availableSets () {
