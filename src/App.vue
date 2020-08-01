@@ -33,15 +33,17 @@
                 </ul>
             </div>
         </div>
-        <div id="game-space">
-            <span v-if="gameOver" id="game-over-label">Game Over</span>
-            <transition-group name="visible-cards" mode="out-in" id="card-grid" tag="div">
-                <Card
-                    v-for="card in visibleCards" v-bind:key="card.id"
-                    v-bind:card="card"
-                    @click="toggleSelect(card)"
-                />
-            </transition-group>
+        <div>
+            <div id="game-space">
+                <span v-if="gameOver" id="game-over-label">Game Over</span>
+                <transition-group name="visible-cards" mode="out-in" id="card-grid" tag="div">
+                    <Card
+                        v-for="card in visibleCards" v-bind:key="card.id"
+                        v-bind:card="card"
+                        @click="toggleSelect(card)"
+                    />
+                </transition-group>
+            </div>
         </div>
         <div v-if="sets.length > 0" id="found-sets-container-bottom">
             <h2>Found sets:</h2>
